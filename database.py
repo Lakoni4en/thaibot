@@ -5,9 +5,15 @@ from datetime import datetime
 from typing import List, Optional
 from dataclasses import asdict
 from config.settings import DATABASE_PATH
+import importlib.util
 import sys
-sys.path.append('.')
-from parser import Tour
+
+# Manually load the parser module
+target_file = "C:/Users/NISI/Desktop/PEP/tour_bot/parser.py"
+spec = importlib.util.spec_from_file_location("parser", target_file)
+parser = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(parser)
+Tour = parser.Tour
 
 logger = logging.getLogger(__name__)
 

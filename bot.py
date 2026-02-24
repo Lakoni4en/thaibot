@@ -4,9 +4,20 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.types import ParseMode
 from aiogram.utils import executor
 from config.settings import TELEGRAM_BOT_TOKEN, ADMIN_ID
+import importlib.util
 import sys
-sys.path.append('.')
-from database import init_db, save_user, get_latest_tours, get_existing_tour_ids
+
+# Manually load the database module
+db_file = "C:/Users/NISI/Desktop/PEP/tour_bot/database.py"
+spec = importlib.util.spec_from_file_location("database", db_file)
+database = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(database)
+
+# Extract required functions
+init_db = database.init_db
+save_user = database.save_user
+get_latest_tours = database.get_latest_tours
+get_existing_tour_ids = database.get_existing_tour_ids
 from parser import get_new_tours
 
 # Configure logging
