@@ -1,11 +1,15 @@
 import logging
 import asyncio
+import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import ParseMode
 from aiogram.utils import executor
 from config.settings import TELEGRAM_BOT_TOKEN, ADMIN_ID
 import importlib.util
 import sys
+
+# Ensure logs directory exists (works both locally and in container)
+os.makedirs("logs", exist_ok=True)
 
 # Manually load the parser module first to avoid conflict
 target_file = "parser.py"
@@ -26,12 +30,12 @@ get_latest_tours = database.get_latest_tours
 get_existing_tour_ids = database.get_existing_tour_ids
 get_new_tours = parser.get_new_tours
 
-# Configure logging
+# Configure logging (use relative path so it works inside container)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("C:/Users/NISI/Desktop/PEP/tour_bot/logs/bot.log"),
+        logging.FileHandler("logs/bot.log"),
         logging.StreamHandler()
     ]
 )
