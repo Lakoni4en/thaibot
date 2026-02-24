@@ -28,51 +28,47 @@ def parse_tours() -> List[Tour]:
     """
     Parse tours from Level.Travel API
     """
-    try:
-        params = SEARCH_PARAMS.copy()
-        response = requests.get(
-            LEVEL_TRAVEL_API_URL,
-            params=params,
-            headers=HEADERS,
-            timeout=30
-        )
-        
-        if response.status_code != 200:
-            logger.error(f"Failed to fetch tours: {response.status_code} {response.text}")
-            return []
-        
-        data = response.json()
-        
-        if not data.get('results'):
-            logger.info("No tours found")
-            return []
-        
-        tours = []
-        for item in data['results']:
-            try:
-                tour = Tour(
-                    tour_id=item['id'],
-                    title=item['title'],
-                    price=int(item['price']['amount']),
-                    departure_date=item['departure_date'],
-                    nights=item['nights'],
-                    hotel_name=item['hotel']['name'],
-                    hotel_rating=item['hotel']['rating'],
-                    meal_type=item['meal_type'],
-                    flight_info=item.get('flight_info', 'Unknown'),
-                    url=f"https://level.travel{item['url']}"
-                )
-                tours.append(tour)
-            except KeyError as e:
-                logger.warning(f"Missing field in tour data: {e}")
-                continue
-        
-        logger.info(f"Parsed {len(tours)} tours")
-        return tours
-        
-    except Exception as e:
-        logger.error(f"Error parsing tours: {e}")
+    params = SEARCH_PARAMS.copy()
+    response = requests.get(
+        LEVEL_TRAVEL_API_URL,
+        params=params,
+        headers=HEADERS,
+        timeout=30
+    )
+    
+    if response.status_code != 200:
+        # Ошибку лучше не скрывать, чтобы бот показал пользователю сообщение об ошибке
+        logger.error(f"Failed to fetch tours: {response.status_code} {response.text}")
+        raise RuntimeError(f"Level.Travel API error: {response.status_code}")
+    
+    data = response.json()
+    
+    if not data.get('results'):
+        logger.info("No tours found from API with given search params")
         return []
+    
+    tours = []
+    for item in data['results']:
+        try:
+            tour = Tour(
+                tour_id=item['id'],
+                title=item['title'],
+                price=int(item['price']['amount']),
+                departure_date=item['departure_date'],
+                nights=item['nights'],
+                hotel_name=item['hotel']['name'],
+                hotel_rating=item['hotel']['rating'],
+                meal_type=item['meal_type'],
+                flight_info=item.get('flight_info', 'Unknown'),
+                url=f"https://level.travel{item['url']}"
+            )
+            tours.append(tour)
+        except KeyError as e:
+            logger.warning(f"Missing field in tour data: {e}")
+            continue
+    
+    logger.info(f"Parsed {len(tours)} tours")
+    return tours
 
 def get_new_tours(existing_ids: List[str]) -> List[Tour]:
     """

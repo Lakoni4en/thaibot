@@ -117,11 +117,21 @@ async def search_tours(message: types.Message):
             
             await message.answer(f"✅ Найдено {len(new_tours)} новых туров!")
         else:
-            await message.answer("❌ Нет новых туров в Паттайю. Попробуйте позже.")
+            # Если в базе ещё нет туров и API вернул пустой список
+            if not existing_ids:
+                await message.answer(
+                    "❌ Сейчас сервис Level.Travel не вернул туров по заданным параметрам.\n"
+                    "Возможно, нет подходящих предложений или слишком строгие фильтры. Попробуйте позже."
+                )
+            else:
+                await message.answer("❌ Нет новых туров в Паттайю. Попробуйте позже.")
             
     except Exception as e:
         logger.error(f"Error searching tours: {e}")
-        await message.answer("❌ Произошла ошибка при поиске туров. Попробуйте позже.")
+        await message.answer(
+            "❌ Произошла ошибка при обращении к сервису туров. "
+            "Попробуйте позже; если проблема повторяется, проверьте логи на сервере."
+        )
 
 @dp.message_handler(commands=['latest'])
 async def show_latest_tours(message: types.Message):
