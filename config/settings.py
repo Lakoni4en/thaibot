@@ -1,5 +1,9 @@
 import os
 
+# Base paths (work both locally and in container)
+_CONFIG_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(_CONFIG_DIR)
+
 # Telegram settings
 TELEGRAM_BOT_TOKEN = "8525211549:AAEVGEuJDTrGz64UXm2gaoWqfnsKuPBg234"
 ADMIN_ID = 866418979
@@ -23,9 +27,9 @@ SEARCH_PARAMS = {
     "page": 1
 }
 
-# Database settings
-DATABASE_PATH = "C:/Users/NISI/Desktop/PEP/tour_bot/data/tours.db"
+# Database settings (relative to project root so it works inside container)
+DATABASE_PATH = os.path.join(PROJECT_ROOT, "data", "tours.db")
 
 # Logging
-LOG_FILE = "C:/Users/NISI/Desktop/PEP/tour_bot/logs/bot.log"
+LOG_FILE = os.path.join(PROJECT_ROOT, "logs", "bot.log")
 LOG_LEVEL = "INFO"

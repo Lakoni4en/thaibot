@@ -1,5 +1,6 @@
 import sqlite3
 import logging
+import os
 from contextlib import contextmanager
 from datetime import datetime
 from typing import List, Optional
@@ -7,6 +8,9 @@ from dataclasses import asdict
 from config.settings import DATABASE_PATH
 import importlib.util
 import sys
+
+# Ensure database directory exists (works both locally and in container)
+os.makedirs(os.path.dirname(DATABASE_PATH), exist_ok=True)
 
 # Manually load the parser module
 target_file = "parser.py"
