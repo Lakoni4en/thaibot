@@ -7,6 +7,12 @@ from config.settings import TELEGRAM_BOT_TOKEN, ADMIN_ID
 import importlib.util
 import sys
 
+# Manually load the parser module first
+target_file = "parser.py"
+spec = importlib.util.spec_from_file_location("parser", target_file)
+parser = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(parser)
+
 # Manually load the database module
 db_file = "database.py"
 spec = importlib.util.spec_from_file_location("database", db_file)
@@ -18,6 +24,7 @@ init_db = database.init_db
 save_user = database.save_user
 get_latest_tours = database.get_latest_tours
 get_existing_tour_ids = database.get_existing_tour_ids
+get_new_tours = parser.get_new_tours
 from parser import get_new_tours
 
 # Configure logging
