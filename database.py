@@ -5,6 +5,8 @@ from datetime import datetime
 from typing import List, Optional
 from dataclasses import asdict
 from config.settings import DATABASE_PATH
+import sys
+sys.path.append('.')
 from parser import Tour
 
 logger = logging.getLogger(__name__)

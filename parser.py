@@ -4,6 +4,9 @@ import logging
 from datetime import datetime
 from typing import List, Dict, Optional
 from dataclasses import dataclass
+import sys
+sys.path.append('.')
+
 from config.settings import LEVEL_TRAVEL_API_URL, HEADERS, SEARCH_PARAMS
 
 logger = logging.getLogger(__name__)

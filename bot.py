@@ -4,6 +4,8 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.types import ParseMode
 from aiogram.utils import executor
 from config.settings import TELEGRAM_BOT_TOKEN, ADMIN_ID
+import sys
+sys.path.append('.')
 from database import init_db, save_user, get_latest_tours, get_existing_tour_ids
 from parser import get_new_tours
 
