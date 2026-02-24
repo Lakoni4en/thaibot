@@ -8,7 +8,7 @@ import importlib.util
 import sys
 
 # Manually load the database module
-db_file = "C:/Users/NISI/Desktop/PEP/tour_bot/database.py"
+db_file = "database.py"
 spec = importlib.util.spec_from_file_location("database", db_file)
 database = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(database)

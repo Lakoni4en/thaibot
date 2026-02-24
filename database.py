@@ -9,7 +9,7 @@ import importlib.util
 import sys
 
 # Manually load the parser module
-target_file = "C:/Users/NISI/Desktop/PEP/tour_bot/parser.py"
+target_file = "parser.py"
 spec = importlib.util.spec_from_file_location("parser", target_file)
 parser = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(parser)
